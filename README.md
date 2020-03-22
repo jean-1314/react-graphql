@@ -1,1 +1,1 @@
-# react-graphql
+# repo to train React/Next-Apollo-Yoga-Prisma stack
