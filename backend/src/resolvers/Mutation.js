@@ -6,9 +6,17 @@ const { transport, makeEmail } = require('../mail');
 
 const Mutations = {
   async createItem(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that');
+    }
     const item = await ctx.db.mutation.createItem({
       data: {
-        ...args
+        user: {
+          connect: {
+            id: ctx.request.userId
+          }
+        },
+        ...args,
       }
     }, info);
     return item;
@@ -76,14 +84,18 @@ const Mutations = {
       where: { email: args.email},
       data: { resetToken, resetTokenExpiry }
     });
-    const mailRes = await transport.sendMail({
-      from: 'reqct-graphql@example.com',
-      to: user.email,
-      subject: 'Your Password Reset Link',
-      html: makeEmail(`Your Password Reset Link is here!
+    try {
+      const mailRes = await transport.sendMail({
+        from: 'reqct-graphql@example.com',
+        to: user.email,
+        subject: 'Your Password Reset Link',
+        html: makeEmail(`Your Password Reset Link is here!
         \n\n <a href="${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}">CLick Here to Reset</a>`)
-    });
-    return { message: 'Thanks' }
+      });
+      return { message: 'Thanks' }
+    } catch(e) {
+      throw new Error(`Error occurred: ${e}`)
+    }
   },
   async resetPassword(parent, args, ctx, info) {
     if (args.password !== args.confirmPassword) {
