@@ -20,3 +20,4 @@ const PleaseSignIn = props => (
 );
 
 export default PleaseSignIn;
+export { CURRENT_USER_QUERY };
