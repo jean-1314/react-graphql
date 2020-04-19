@@ -34,7 +34,9 @@ describe('<PleaseSignIn />', () => {
     const Hey = () => <p>Hey!</p>;
     const wrapper = mount(
       <MockedProvider mocks={signedInMocks}>
-        <PleaseSignIn />
+        <PleaseSignIn>
+          <Hey />
+        </PleaseSignIn>
       </MockedProvider>
     );
     await wait();

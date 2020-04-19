@@ -26,11 +26,11 @@ describe('<Item />', () => {
   });
   it('renders out the buttons properly', () => {
     const wrapper = shallow(<Item item={fakeItem}/>);
-    const ButtonList = wrapper.find('.buttonList');
+    const buttonList = wrapper.find('.buttonList');
     expect(buttonList.children()).toHaveLength(3);
-    expect(ButtonList.find('Link').exists()).toBeTruthy();
-    expect(ButtonList.find('AddToCart').exists()).toBeTruthy();
-    expect(ButtonList.find('DeleteFromCart').exists()).toBeTruthy();
+    expect(buttonList.find('Link').exists()).toBeTruthy();
+    expect(buttonList.find('AddToCart').exists()).toBeTruthy();
+    expect(buttonList.find('DeleteItem').exists()).toBeTruthy();
   });
   it('renders and matches the snapshot', () => {
     const wrapper = shallow(<Item item={fakeItem} />);
